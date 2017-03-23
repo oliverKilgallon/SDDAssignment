@@ -2,6 +2,7 @@ package me.oliver.textgame.gui;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -23,48 +24,53 @@ import javax.swing.JTextField;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JProgressBar;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 
+/**
+ * @author Oliver Kilgallon
+ *
+ */
 @SuppressWarnings("serial")
 public class MainGame extends JFrame
 {
 
 	private JFrame frame;
+	
 	private JPanel contentPane;
 	private JPanel panelGame;
 	private JPanel panelProgress;
 	private JPanel panelState;
 	private JPanel panelScore;
 	private JPanel panelAccuracy;
+	private JPanel panelTime;
 	
 	private JLabel lblQuestion;
 	private JLabel lblAnswer;
 	private JLabel lblProgress;
 	private JLabel lblScoreText;
 	private JLabel lblAccuracy;
+	private JLabel lblTime;
+	private JLabel lblSeconds;
+	private JLabel lblCurrentLevel;
+	private JLabel lblLevelNum;
+	private JLabel lblMinutes;
+	private JLabel lblDivider;
+	private JLabel lblAccuracyNum;
+	private JLabel lblScoreNum;
 	
 	private JTextField tfQuestion;
 	private JTextField tfAnswer;
 	
 	private JProgressBar pbCompletion;
-	private JLabel lblAccuracyNum;
-	private JLabel lblScoreNum;
 	
 	private GameController game;
-	private JPanel panelTime;
-	private JLabel lblTime;
-	private JLabel lblSeconds;
-	
-	private boolean isStringCorrect;
-	
-	private JLabel lblCurrentLevel;
-	private JLabel lblLevelNum;
-	private JLabel lblMinutes;
-	private JLabel lblDivider;
 	
 	private LevelTimer timer;
+	
+	private boolean isStringCorrect;
 
 	/**
 	 * Create the frame.
@@ -104,7 +110,7 @@ public class MainGame extends JFrame
 		
 		tfQuestion = new JTextField();
 		panelGame.add(tfQuestion);
-		tfQuestion.setColumns(10);
+		tfQuestion.setColumns(16);
 		tfQuestion.setEditable(false);
 		
 		lblAnswer = new JLabel("Answer:");
@@ -154,8 +160,10 @@ public class MainGame extends JFrame
 		lblLevelNum = new JLabel("");
 		panelProgress.add(lblLevelNum);
 		
-		frame.addWindowFocusListener(new WindowAdapter() {
-		    public void windowGainedFocus(WindowEvent e) {
+		frame.addWindowFocusListener(new WindowAdapter() 
+		{
+		    public void windowGainedFocus(WindowEvent e) 
+		    {
 		        tfAnswer.requestFocusInWindow();
 		    }
 		});
@@ -183,7 +191,8 @@ public class MainGame extends JFrame
 		tfAnswer.addKeyListener(new KeyListener()
 		{
 			@Override
-			public void keyPressed(KeyEvent key){				
+			public void keyPressed(KeyEvent key)
+			{				
 			}
 	
 			@Override
@@ -201,10 +210,14 @@ public class MainGame extends JFrame
 					updateScore();
 					updateAccuracy();
 					tfAnswer.setText("");
-					if(game.isQuestionAvailable() == true){
+					
+					if(game.isQuestionAvailable() == true)
+					{
 						tfQuestion.setText(game.nextQuestion());
 						pbCompletion.setValue((int) (game.getProgress()));
-					} else if(game.isLastLevel() && !game.isQuestionAvailable())
+					} 
+					
+					else if(game.isLastLevel() && !game.isQuestionAvailable())
 					{
 						timer.endTimer();
 						
@@ -214,17 +227,32 @@ public class MainGame extends JFrame
 						
 						new EditGameStats(StatisticType.SCORE, String.valueOf( game.getCurrentScore() ) );
 						
-						new EditGameStats(StatisticType.COMPLETION_TIME, String.valueOf( 
-							"" + 
-							timer.getElapsedMinutes() + 
-							":" + 
-							timer.getElapsedSeconds() ) 
-						);
+						if(timer.getElapsedSeconds() < 10)
+						{
+							new EditGameStats(StatisticType.COMPLETION_TIME, "" + 
+									timer.getElapsedMinutes() + 
+									":" + 
+									"0" +
+									timer.getElapsedSeconds()
+							);
+						} 
+						
+						else 
+						{
+							new EditGameStats(StatisticType.COMPLETION_TIME, "" + 
+								timer.getElapsedMinutes() + 
+								":" + 
+								timer.getElapsedSeconds()
+							);
+						}
+						
 						frame.dispose();
 						String[] options = {"OK"};
 						JOptionPane.showOptionDialog(null, "You completed the game!", "Congratulations", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 						new MainMenu();
-					}else 
+					}
+					
+					else 
 					{
 						game.levelUp();
 						lblLevelNum.setText("" + (game.getCurrentLevel() + 1));
@@ -233,28 +261,32 @@ public class MainGame extends JFrame
 						
 						switch(game.getCurrentLevel() + 1)
 						{
-						case 1:
-							contentPane.setBackground(Color.GREEN);
-							break;
-						case 2:
-							contentPane.setBackground(Color.CYAN);
-							break;
-						case 3:
-							contentPane.setBackground(Color.PINK);
-							break;
-						case 4:
-							contentPane.setBackground(new Color(182, 130, 255));
-							break;
-						case 5:
-							contentPane.setBackground(new Color(99, 255, 156));
-							break;
-						default:
-							contentPane.setBackground(Color.WHITE);
-							break;
+							case 1:
+								contentPane.setBackground(Color.GREEN);
+								break;
+							case 2:
+								contentPane.setBackground(Color.CYAN);
+								break;
+							case 3:
+								contentPane.setBackground(Color.PINK);
+								break;
+							case 4:
+								contentPane.setBackground(new Color(182, 130, 255));
+								break;
+							case 5:
+								contentPane.setBackground(new Color(99, 255, 156));
+								break;
+							default:
+								contentPane.setBackground(Color.WHITE);
+								break;
 						}
 					}
-					
-				}				
+				}
+				
+				else 
+				{
+					tfAnswer.setBackground(Color.white);
+				}
 			}
 		});
 	}
@@ -321,6 +353,7 @@ public class MainGame extends JFrame
 				
 				
 			}
+			
 		    public void focusLost(FocusEvent e) 
 		    {
 		    	tfAnswer.setText("Type here");
@@ -330,5 +363,30 @@ public class MainGame extends JFrame
 		    	tfAnswer.setBorder(null);
 		    }
 		});
+	}
+	
+	/**
+	 * @return The value of the question text field. For testing purposes
+	 */
+	public String getQuestionText()
+	{
+		return tfQuestion.getText();
+	}
+	
+	/**
+	 * Set the value of the answer text field to the passed in string
+	 * @param answer The passed in string value for the answer text field
+	 */
+	public void setAnswer(String answer)
+	{
+		tfAnswer.setText(answer);
+	}
+	
+	/**
+	 * @return A boolean that is normally immediately assigned to a variable. This method is for JUnit testing
+	 */
+	public boolean checkAnswer()
+	{
+		return game.checkAnswer(tfQuestion.getText(), tfAnswer.getText());
 	}
 }

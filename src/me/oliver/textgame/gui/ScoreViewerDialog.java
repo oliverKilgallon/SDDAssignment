@@ -7,8 +7,9 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -18,7 +19,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
 
 @SuppressWarnings("serial")
-public class ScoreViewerDialog extends JDialog {
+public class ScoreViewerDialog extends JDialog 
+{
 
 	private final JPanel contentPanel = new JPanel();
 	private JList<String> list;
@@ -30,7 +32,8 @@ public class ScoreViewerDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ScoreViewerDialog() {
+	public ScoreViewerDialog() 
+	{
 		statData = new ArrayList<String>();
 		dialog = new JDialog(dialog, "Previous game stats");
 		dialog.setBounds(100, 100, 250, 160);
@@ -46,21 +49,26 @@ public class ScoreViewerDialog extends JDialog {
 			{
 				okButton = new JButton("OK");
 				buttonPane.add(okButton);
-				okButton.addActionListener(new ActionListener(){
+				okButton.addActionListener(new ActionListener()
+				{
 
 					@Override
-					public void actionPerformed(ActionEvent e) {
+					public void actionPerformed(ActionEvent e) 
+					{
 						dialog.dispose();
-					}});
+					}
+				});
 			}
 		}
 		
 		try
 		{
-			FileReader fileReader = 
-					new FileReader("/Score.txt");
+			InputStream filename = this.getClass().getResourceAsStream("/Score.txt");
+			
+			InputStreamReader inputReader = new InputStreamReader(filename);
+			
 	        BufferedReader file = 
-	        		new BufferedReader(fileReader);
+	        		new BufferedReader(inputReader);
 	        
 	        String line;
 
@@ -83,19 +91,22 @@ public class ScoreViewerDialog extends JDialog {
 			contentPanel.add(list);
 	        
 	        file.close();
-	        System.out.println("Congrats");
 		}
-		catch (FileNotFoundException ex){
+		
+		catch (FileNotFoundException ex)
+		{
 			File file = new File("/Score.txt");
 			System.out.println(file.exists());
 			System.out.println("Couldn't find file");
 			
-		} catch (IOException ex){
+		} 
+		
+		catch (IOException ex)
+		{
 			ex.printStackTrace();
 		}
 		
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setVisible(true);
 	}
-
 }

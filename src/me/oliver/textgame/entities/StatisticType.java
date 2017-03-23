@@ -1,6 +1,7 @@
 package me.oliver.textgame.entities;
 
-public enum StatisticType {
+public enum StatisticType 
+{
 	LEVEL,
 	ACCURACY,
 	COMPLETION_TIME,

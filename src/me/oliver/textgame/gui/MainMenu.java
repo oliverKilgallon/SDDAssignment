@@ -2,6 +2,7 @@ package me.oliver.textgame.gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,30 +16,30 @@ import javax.swing.border.EmptyBorder;
 import me.oliver.textgame.controllers.EditGameStats;
 import me.oliver.textgame.entities.StatisticType;
 
-
 @SuppressWarnings("serial")
 public class MainMenu extends JFrame{
 
 	private JPanel contentPane;
 	private JPanel panel;
+	private JPanel panelButtons;
 	
 	private JLabel lblTypeThatText;
-	private JPanel panelButtons;
 	
 	private JButton btnPlay;
 	private JButton btnShowHiscore;
 	private JButton btnQuit;
 	
 	private JFrame frame;
-	private JPanel panelImage;
-	//private JLabel lblImageHolder;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
 				
 				try {
 					new EditGameStats(StatisticType.ACCURACY, String.valueOf( "0") );
@@ -51,7 +52,8 @@ public class MainMenu extends JFrame{
 					
 					new MainMenu();
 					
-				} catch (Exception e) {
+				} catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -63,7 +65,8 @@ public class MainMenu extends JFrame{
 	/**
 	 * Create the frame.
 	 */
-	public MainMenu() {
+	public MainMenu() 
+	{
 		frame = this;
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -89,7 +92,8 @@ public class MainMenu extends JFrame{
 		{
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
 				Integer[] difficulties = 
 					{
 						1,
@@ -107,18 +111,17 @@ public class MainMenu extends JFrame{
 		btnShowHiscore = new JButton("Show Score");
 		panelButtons.add(btnShowHiscore);
 		
-		btnShowHiscore.addActionListener(new ActionListener(){
-
+		btnShowHiscore.addActionListener(new ActionListener()
+		{
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
 				new ScoreViewerDialog();
-			}});
+			}
+		});
 		
 		btnQuit = new JButton("Quit");
 		panelButtons.add(btnQuit);
-		
-		panelImage = new JPanel();
-		contentPane.add(panelImage, BorderLayout.SOUTH);
 		
 		btnQuit.addActionListener(new ActionListener()
 		{
@@ -128,5 +131,5 @@ public class MainMenu extends JFrame{
 				frame.dispose();
 			}
 		});
-		}
+	}
 }

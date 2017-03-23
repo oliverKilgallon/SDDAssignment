@@ -72,7 +72,8 @@ public class GameController
 	/**
 	 * @return	The value of how many correct answers the user has entered
 	 */
-	public int getCorrectStrings(){
+	public int getCorrectStrings()
+	{
 		return correctStrings;
 	}
 	

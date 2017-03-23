@@ -35,8 +35,11 @@ public class LevelTimer implements Runnable
 	
 	
 	@Override
-	public void run() {
-		while(!threadEnd){
+	public void run() 
+	{
+		while (!threadEnd)
+		{
+			
 			elapsedSeconds++;
 			if(elapsedSeconds == 60)
 			{
@@ -44,8 +47,6 @@ public class LevelTimer implements Runnable
 				elapsedMinutes++;
 			}
 			
-			System.out.println(elapsedSeconds);
-			System.out.println(elapsedMinutes);
 			if(elapsedSeconds < 10)
 			{
 				lblSeconds.setText("0" + elapsedSeconds);
@@ -61,20 +62,28 @@ public class LevelTimer implements Runnable
 			{
 				lblMinutes.setText("" + elapsedMinutes);
 			}
-			try {
+			
+			try 
+			{
 				Thread.sleep(1000);
-			} catch (InterruptedException e) {
+			} catch (InterruptedException e) 
+			{
 				e.printStackTrace();
 			}
 		}
 	}
 	
+	/**
+	 * Ends the level timer when called by exiting the while loop then joining the thread to end it
+	 */
 	public void endTimer()
 	{
-		try {
+		try 
+		{
 			threadEnd = true;
 			levelTimer.join();
-		} catch (InterruptedException e) {
+		} catch (InterruptedException e) 
+		{
 			e.printStackTrace();
 		}
 	}

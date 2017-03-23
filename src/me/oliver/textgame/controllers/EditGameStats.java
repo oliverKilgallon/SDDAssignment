@@ -4,37 +4,28 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import me.oliver.textgame.entities.Level;
 import me.oliver.textgame.entities.StatisticType;
 
-public class EditGameStats {
+public class EditGameStats 
+{
 
 	private ArrayList<String> statData;
 	public EditGameStats(StatisticType type, String value)
 	{
 		statData = new ArrayList<String>();
-		String filename = "/Score.txt";
 		
-		File bell = new File("/Score.txt");
-		if(!bell.exists())
-		{
-			try {
-				Level.ExportResource("Score.txt");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		InputStream filename = this.getClass().getResourceAsStream("/Score.txt");
 		
 		try {
+			InputStreamReader inputReader = new InputStreamReader(filename);
 	        // input the file content to the String "input"
-			FileReader fileReader = 
-					new FileReader(filename);
 	        BufferedReader file = 
-	        		new BufferedReader(fileReader);
+	        		new BufferedReader(inputReader);
 	        
 	        String line;
 	        String input = "";
@@ -44,7 +35,6 @@ public class EditGameStats {
 	        	statData.add(line);
 	        	input += line + "\n";
 	        }
-
 	        file.close();
 	        
 	        switch(type)
@@ -88,28 +78,61 @@ public class EditGameStats {
 			default:
 				break;
 	        }
-	       
+	        
 	        input = "";
+	        
 	        for(String s : statData)
 	        {
 	        	input += s + "\n";
 	        }
-
-	        // write the new String with the replaced line OVER the same file
-	        FileOutputStream fileOut = new FileOutputStream(filename);
-	        fileOut.write(input.getBytes());
-	        fileOut.close();
 	        
-	        System.out.println("Edited correct");
+	        FileOutputStream out = null;
+	        File score;
+	        
+	        try 
+	        {
+	        	score = new File("/Score.txt");
+	        	out = new FileOutputStream(score);
+	        	
+	        	byte[] inputBytes = input.getBytes();
+	        	
+	        	out.write(inputBytes);
+	        	out.close();
+	        	
+	        } 
+	        
+	        catch (IOException ex)
+	        {
+	        	ex.printStackTrace();
+	        } 
+	        
+	        finally 
+	        {
+	        	try 
+	        	{
+	        		if(out != null)
+	        		{
+	        			out.close();
+	        		}
+	        	} 
+	        	
+	        	catch (IOException ex)
+	        	{
+	        		ex.printStackTrace();
+	        	}
+	        }
+	        
 
-		} catch (FileNotFoundException ex){
-			System.out.println(
-					"Unable to find file '" +
-							filename + "'");
-		} catch (IOException ex){
-			System.out.println(
-					"Error reading file '" +
-							filename + "'");
+		} 
+		
+		catch (FileNotFoundException ex)
+		{
+			System.out.println("Unable to find file '" + filename + "'");
+		} 
+		
+		catch (IOException ex)
+		{
+			System.out.println("Error reading file '" +	filename + "'");
 		}
 	}
 }

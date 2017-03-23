@@ -1,19 +1,15 @@
 package me.oliver.textgame.entities;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
-import me.oliver.textgame.gui.MainMenu;
-
-public class Level {
+public class Level 
+{
 	private ArrayList<String> levelData;
 	
 	private int score;
@@ -28,22 +24,14 @@ public class Level {
 	 * 
 	 * @param levelNum	A number passed in to find out which text file to read from the res folder
 	 */
-	public Level(int levelNum){
+	public Level(int levelNum)
+	{
 		levelData = new ArrayList<String>();
 		this.levelNum = levelNum;
 		
 		InputStream filename = this.getClass().getResourceAsStream("/levels/" + levelNum + ".txt");
 		
 		String line = null;
-		File file = new File("/Score.txt");
-		if(!file.exists())
-		{
-			try {
-				ExportResource("/Score.txt");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 
 		try {
 			
@@ -69,35 +57,6 @@ public class Level {
 		}
 		startStringAmount = levelData.size();
 		currentQuestion = -1;
-	}
-	
-	static public String ExportResource(String resourceName) throws Exception 
-	{
-		InputStream stream = null;
-		OutputStream resStreamOut = null;
-		String jarFolder;
-		try {
-			stream = MainMenu.class.getResourceAsStream(resourceName);
-			if(stream == null){
-				throw new Exception("cannot find \"" + resourceName + "\" from Jar file. ");
-			}
-			
-			int readBytes;
-			byte[] buffer = new byte[4096];
-			
-			jarFolder = new File(MainMenu.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath().replace('\\', '/');
-			resStreamOut = new FileOutputStream(jarFolder + resourceName);
-			while((readBytes = stream.read(buffer)) > 0){
-				resStreamOut.write(buffer, 0, readBytes);
-			}
-		} catch (Exception ex) {
-			throw ex;
-		} finally {
-			stream.close();
-			resStreamOut.close();
-		}
-		
-		return jarFolder + resourceName;
 	}
 	
 	/**
